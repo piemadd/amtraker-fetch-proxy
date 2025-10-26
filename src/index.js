@@ -59,17 +59,16 @@ export default {
         `https://maps.amtrak.com/services/MapDataService/trains/getTrainsData?${Date.now()}=true`,
         `https://maps.amtrak.com/services/MapDataService/stations/AllTTMTrains?${Date.now()}=true`,
       ].map((url) => fetch(url, STANDARD_CONFIG).then(res => res.text().catch((e) => {
-        console.log(e);
-        throw new Error('Error fetching, abort');
+        throw e;
       }))));
-    } catch (e) {
-      return Response.error('Error fetching data from amtrak, oops')
-    };
 
-    return Response.json({
-      trainStations,
-      trainDataMain,
-      trainDataASMAD,
-    });
+      return Response.json({
+        trainStations,
+        trainDataMain,
+        trainDataASMAD,
+      });
+    } catch (e) {
+      return Response.error('Error fetching data from amtrak, oops:', e)
+    };
   },
 };
