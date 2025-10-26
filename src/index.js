@@ -53,11 +53,13 @@ export default {
       const [
         trainStations,
         trainDataMain,
-        trainDataASMAD
+        trainDataASMAD,
+        ipAddress,
       ] = await Promise.all([
         `https://maps.amtrak.com/services/MapDataService/stations/trainStations?${Date.now()}=true`,
         `https://maps.amtrak.com/services/MapDataService/trains/getTrainsData?${Date.now()}=true`,
         `https://maps.amtrak.com/services/MapDataService/stations/AllTTMTrains?${Date.now()}=true`,
+        'https://api.ipify.org/',
       ].map((url) => fetch(url, STANDARD_CONFIG).then(res => res.text().catch((e) => {
         throw e;
       }))));
@@ -66,6 +68,7 @@ export default {
         trainStations,
         trainDataMain,
         trainDataASMAD,
+        ipAddress
       });
     } catch (e) {
       return Response.error('Error fetching data from amtrak, oops:', e)
